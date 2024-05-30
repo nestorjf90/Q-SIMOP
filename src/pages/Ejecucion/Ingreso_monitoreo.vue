@@ -96,6 +96,15 @@
             >
             </q-input>
           </div>
+          <div class="col-12">
+            <q-select
+              v-model="selectedYear"
+              :options="yearOptions"
+              label="Selecionar año"
+              outlined
+              dense
+            />
+          </div>
           <div class="col-xs-6 col-md-6">
             <span>Sector Promoción y Protección Humana</span>
           </div>
@@ -445,6 +454,8 @@ export default {
       grup_vulnerable2: ref([]),
       area_accion1: ref([]),
       area_accion2: ref([]),
+      yearOptions: this.generateYearOptions(),
+      selectedYear: null,
       options: [
         { label: 'individuos', value: 'bat' },
         { label: 'Hogares', value: 'friend', color: 'bat' },
@@ -555,6 +566,15 @@ export default {
     },
     toggleFullScreen() {
       this.isFullScreen = !this.isFullScreen;
+    },
+    generateYearOptions() {
+      const currentYear = new Date().getFullYear();
+      const startYear = currentYear - 100; // Cambia esto si necesitas otro rango de años
+      const years = [];
+      for (let year = currentYear; year >= startYear; year--) {
+        years.push(year);
+      }
+      return years;
     },
   },
 };
