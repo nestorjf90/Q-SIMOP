@@ -1,4 +1,6 @@
 import { route } from 'quasar/wrappers';
+import { useStore } from '../stores/login';
+import { apiLogin } from '../boot/axios';
 import {
   createMemoryHistory,
   createRouter,
@@ -23,6 +25,13 @@ export default route(function (/* { store, ssrContext } */) {
     // quasar.conf.js -> build -> vueRouterMode
     // quasar.conf.js -> build -> publicPath
     history: createHistory(process.env.VUE_ROUTER_BASE),
+  });
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  Router.beforeEach((to, from, next) => {
+    const store = useStore();
+    apiLogin.defaults.headers.Authorization = `Bearer ${store.token}`;
+    next();
   });
 
   return Router;

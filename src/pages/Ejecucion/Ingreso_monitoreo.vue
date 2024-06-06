@@ -16,7 +16,7 @@
           </div>
           <div class="col-12">
             <q-input
-              v-model="Proyecto"
+              v-model="datos.nombreProyecto"
               label-color="primary"
               color="accent"
               type="text"
@@ -28,7 +28,7 @@
           </div>
           <div class="col-12 col-md-6">
             <q-input
-              v-model="Estado"
+              v-model="datos.estado"
               type="text"
               label="Estado"
               label-color="primary"
@@ -41,7 +41,7 @@
           </div>
           <div class="col-12 col-md-6">
             <q-input
-              v-model="descripcion_proyecto"
+              v-model="datos.descripcionGeneralProyecto"
               label="Descripcion del proyecto"
               outlined
               autogrow
@@ -50,7 +50,7 @@
           </div>
           <div class="col-12 col-md-6">
             <q-input
-              v-model="objetivo_proyecto"
+              v-model="datos.objetivoGeneralProyecto"
               label="Objetivo del proyecto"
               outlined
               autogrow
@@ -59,61 +59,7 @@
           </div>
           <div class="col-12 col-md-6">
             <q-input
-              v-model="sector"
-              type="text"
-              label="Sector"
-              label-color="primary"
-              color="accent"
-              outlined
-              dense
-              disable
-            >
-            </q-input>
-          </div>
-          <div class="col-12 col-md-6">
-            <q-input
-              v-model="sub_sector"
-              type="text"
-              label="Sub sector"
-              label-color="primary"
-              color="accent"
-              outlined
-              dense
-              disable
-            >
-            </q-input>
-          </div>
-          <div class="col-12 col-md-6">
-            <q-input
-              v-model="poolitica_publica"
-              type="text"
-              label="Politica publica"
-              label-color="primary"
-              color="accent"
-              outlined
-              dense
-              disable
-            >
-            </q-input>
-          </div>
-          <div class="col-12">
-            <q-select
-              v-model="selectedYear"
-              :options="yearOptions"
-              label="Selecionar año"
-              outlined
-              dense
-            />
-          </div>
-          <div class="col-xs-6 col-md-6">
-            <span>Sector Promoción y Protección Humana</span>
-          </div>
-          <div class="col-xs-6 col-md-6">
-            <span>Protección social</span>
-          </div>
-          <div class="col-12 col-md-6">
-            <q-input
-              v-model="n_resolucion"
+              v-model="datos.numeroResolucionCongreso"
               type="text"
               label="N.o resolucion"
               label-color="primary"
@@ -126,7 +72,7 @@
           </div>
           <div class="col-12 col-md-6">
             <q-input
-              v-model="n_decreto"
+              v-model="datos.numeroRatificacionCongreso"
               type="text"
               label="N.o decreto"
               label-color="primary"
@@ -139,7 +85,7 @@
           </div>
           <div class="col-6 col-md-6">
             <q-input
-              v-model="fecha_firma"
+              v-model="datos.fechaFirma"
               type="text"
               label="Fecha firma"
               label-color="primary"
@@ -152,7 +98,7 @@
           </div>
           <div class="col-6 col-md-6">
             <q-input
-              v-model="fecha_efectividad"
+              v-model="datos.fechaEfectividad"
               type="text"
               label="Fecha efectividad"
               label-color="primary"
@@ -165,7 +111,7 @@
           </div>
           <div class="col-6 col-md-6">
             <q-input
-              v-model="fecha_inicio"
+              v-model="datos.FechaInicio"
               type="text"
               label="Fecha inicio"
               label-color="primary"
@@ -178,7 +124,7 @@
           </div>
           <div class="col-6 col-md-6">
             <q-input
-              v-model="fecha_cierre"
+              v-model="datos.fechaCierre"
               type="text"
               label="Fecha cierre"
               label-color="primary"
@@ -191,7 +137,7 @@
           </div>
           <div class="col-12 col-md-6">
             <q-input
-              v-model="fecha_cierre_A"
+              v-model="datos.fechaCierreAmpliada"
               type="text"
               label="Fecha cierre ampliada"
               label-color="primary"
@@ -230,91 +176,75 @@
           </div>
           <div class="col-12 col-md-4">
             <q-input
-              v-model="ejecucion_monitoreada"
+              v-model="EjecucionMonitoreada"
               type="text"
               label="Ejecucion monitoreada"
               label-color="primary"
               color="accent"
               outlined
               dense
-              disable
             >
             </q-input>
           </div>
           <div class="col-12">
             <p id="titulos">CATEGORIZACION DE LOS PARTICIPANTES</p>
           </div>
-          <div class="col-12">
+          <div class="col-12" v-if="datoslista.unidades">
             <label style="font-weight: bold">Unidad de accion</label>
             <q-option-group
-              :options="options"
+              :options="datoslista.unidades"
               type="checkbox"
               v-model="unidad_accion"
             />
           </div>
-          <div class="col-12">
+          <div class="col-12" v-if="datoslista.generos">
             <label style="font-weight: bold">Genero</label>
             <q-option-group
-              :options="generos"
+              :options="datoslista.generos"
               type="checkbox"
               v-model="genero"
             />
           </div>
-          <div class="col-12">
+          <div class="col-12" v-if="datoslista.areas">
             <label style="font-weight: bold">Area</label>
-            <q-option-group :options="areas" type="checkbox" v-model="area" />
+            <q-option-group
+              :options="datoslista.areas"
+              type="checkbox"
+              v-model="area"
+            />
           </div>
-          <div class="col-12">
+          <div class="col-12" v-if="datoslista.generos">
             <label style="font-weight: bold"
               >Pueblos originario o afrodescendiente</label
             >
-          </div>
-          <div class="col-6">
             <q-option-group
-              :options="pueblos1"
+              :options="datoslista.gruposoriginarios"
               type="checkbox"
-              v-model="pueblo1"
+              v-model="pueblo"
             />
           </div>
-          <div class="col-6">
-            <q-option-group
-              :options="pueblos2"
-              type="checkbox"
-              v-model="pueblo2"
-            />
-          </div>
-          <div class="col-12">
+          <div class="col-12" v-if="datoslista.generos">
             <label style="font-weight: bold">Grupos vulnerable</label>
-          </div>
-          <div class="col-6">
             <q-option-group
-              :options="grup_vulnerables"
+              :options="datoslista.vulnerables"
               type="checkbox"
               v-model="grup_vulnerable"
             />
           </div>
-          <div class="col-6">
-            <q-option-group
-              :options="grup_vulnerables2"
-              type="checkbox"
-              v-model="grup_vulnerable2"
-            />
-          </div>
-          <div class="col-12">
+          <div class="col-12" v-if="datoslista.generos">
             <label style="font-weight: bold">Area de accion</label>
-          </div>
-          <div class="col-6">
             <q-option-group
-              :options="area_acciones1"
+              :options="datoslista.areaaccion"
               type="checkbox"
-              v-model="area_accion1"
+              v-model="area_accion"
             />
           </div>
-          <div class="col-6">
+          <div class="col-12" v-if="datoslista.generos">
+            <label style="font-weight: bold">Area de accion</label>
             <q-option-group
-              :options="area_acciones2"
+              :options="datoslista.edades"
               type="checkbox"
-              v-model="area_accion2"
+              v-model="edadlist"
             />
           </div>
           <div class="col-12">
@@ -322,66 +252,61 @@
           </div>
           <div class="col-12 col-md-4">
             <q-input
-              v-model="cant_boys"
+              v-model="CantidadNinos"
               type="text"
               label="Cantidad niños "
               label-color="primary"
               color="accent"
               outlined
               dense
-              disable
             >
             </q-input>
           </div>
           <div class="col-12 col-md-4">
             <q-input
-              v-model="cant_girls"
+              v-model="CantidadNinas"
               type="text"
               label="Cantidad niñas "
               label-color="primary"
               color="accent"
               outlined
               dense
-              disable
             >
             </q-input>
           </div>
           <div class="col-12 col-md-4">
             <q-input
-              v-model="cant_adulto"
+              v-model="CantidadAdultoMayor"
               type="text"
               label="Cantidad adulto mayor "
               label-color="primary"
               color="accent"
               outlined
               dense
-              disable
             >
             </q-input>
           </div>
           <div class="col-12 col-md-4">
             <q-input
-              v-model="cant_embarazadas"
+              v-model="CantidadMujeresEmbarazadas"
               type="text"
               label="Cantidad mujeres embarazadas"
               label-color="primary"
               color="accent"
               outlined
               dense
-              disable
             >
             </q-input>
           </div>
           <div class="col-12 col-md-4">
             <q-input
-              v-model="cant_discapacidad"
+              v-model="CantidadDiscapacidad"
               type="text"
               label="Cantidad con discapacidad"
               label-color="primary"
               color="accent"
               outlined
               dense
-              disable
             >
             </q-input>
           </div>
@@ -390,7 +315,7 @@
           </div>
           <div class="col-12 col-md-6">
             <q-input
-              v-model="observaciones"
+              v-model="Observaciones"
               label="Observaciones"
               outlined
               autogrow
@@ -398,11 +323,35 @@
           </div>
           <div class="col-12 col-md-6">
             <q-input
-              v-model="segerencias"
+              v-model="Sugerencias"
               label="Sugerencias"
               outlined
               autogrow
             />
+          </div>
+
+          <div class="col-12">
+            <q-btn label="Get Coordinates" @click="getCoordinates" />
+            <div v-if="coordinates">
+              <div class="col-12 col-md-6">
+                <q-input
+                  v-model="coordinates.latitude"
+                  label="Latitud"
+                  outlined
+                  autogrow
+                  disable
+                />
+              </div>
+              <div class="col-12 col-md-6">
+                <q-input
+                  v-model="coordinates.longitude"
+                  label="Longitud"
+                  outlined
+                  autogrow
+                  disable
+                />
+              </div>
+            </div>
           </div>
           <div class="col-6">
             <q-btn
@@ -423,6 +372,7 @@
               type="submit"
               no-caps
               icon="save"
+              @click="guardarinfo"
               outlined
             />
           </div>
@@ -434,13 +384,18 @@
 
 <script>
 import { ref } from 'vue';
+import { useStore } from '../../stores/login';
 
 export default {
   setup() {
-    return {};
+    const store = useStore();
+    return { store };
   },
   data() {
     return {
+      coordinates: null,
+      datos: [],
+      datoslista: [],
       isFullScreen: false,
       filter: ref(''),
       medium: ref(false),
@@ -448,134 +403,157 @@ export default {
       unidad_accion: ref([]),
       genero: ref([]),
       area: ref([]),
-      pueblo1: ref([]),
-      pueblo2: ref([]),
+      pueblo: ref([]),
       grup_vulnerable: ref([]),
-      grup_vulnerable2: ref([]),
-      area_accion1: ref([]),
-      area_accion2: ref([]),
-      yearOptions: this.generateYearOptions(),
-      selectedYear: null,
-      options: [
-        { label: 'individuos', value: 'bat' },
-        { label: 'Hogares', value: 'friend', color: 'bat' },
-        { label: 'Familias', value: 'familias', color: 'bat' },
-        { label: 'comunidades', value: 'comunidades', color: 'bat' },
-        { label: 'infancia', value: 'infancia', color: 'bat' },
-      ],
-      generos: [
-        { label: 'Femenino', value: 'f' },
-        { label: 'Masculino', value: 'm', color: 'bat' },
-        { label: 'Otros', value: 'o', color: 'bat' },
-      ],
-      areas: [
-        { label: 'Rural', value: 'rural', color: 'bat' },
-        { label: 'Urbano', value: 'urbano', color: 'bat' },
-      ],
-      pueblos1: [
-        { label: 'Chorti', value: 'Chorti' },
-        { label: 'Lencas', value: 'Lencas', color: 'bat' },
-        { label: 'Misquitos', value: 'Misquitos', color: 'bat' },
-        { label: 'Negros de habla inglesa', value: 'negros', color: 'bat' },
-        { label: 'Nahuait', value: 'Nahuait', color: 'bat' },
-      ],
-      pueblos2: [
-        { label: 'Pech', value: 'Pech' },
-        { label: 'Tolupanes', value: 'Tolupanes', color: 'bat' },
-        { label: 'Garifunas', value: 'Garifunas', color: 'bat' },
-        { label: 'Tawakas', value: 'Tawakas', color: 'bat' },
-        { label: 'Sin especificar', value: 'sin_especificar', color: 'bat' },
-      ],
-      grup_vulnerables: [
-        {
-          label: 'Mujeres embarazadas',
-          value: 'muejeres_embarzadas',
-          color: 'bat',
-        },
-        {
-          label: 'Diversidad sexual',
-          value: 'diversidad_sexual',
-        },
-        {
-          label: 'Explotacion sexual comercial',
-          value: 'explotacion_sexual_comercial',
-          color: 'bat',
-        },
-        {
-          label: 'Embarazo Adolescente',
-          value: 'embarazo_adolesente',
-          color: 'bat',
-        },
-        { label: 'En pobreza extrema', value: 'pobreza_extrema', color: 'bat' },
-      ],
-      grup_vulnerables2: [
-        { label: 'Adulto Mayor', value: 'adulto_mayor', color: 'bat' },
-        { label: 'Discapacidad', value: 'discapacidad', color: 'bat' },
-        { label: 'Persona con VIH', value: 'vih', color: 'bat' },
-        {
-          label: 'Poblacion en situaciones de calle',
-          value: 'm',
-          color: 'bat',
-        },
-        {
-          label: 'Victimas en violencia',
-          value: 'm',
-          color: 'bat',
-        },
-        {
-          label: 'En pobreza',
-          value: 'm',
-          color: 'bat',
-        },
-      ],
-      area_acciones1: [
-        {
-          label: 'Proteccion social',
-          value: 'proteccion_social',
-          color: 'bat',
-        },
-        { label: 'Economia social', value: 'economia_social', color: 'bat' },
-        { label: 'Formacion social', value: 'formacion_social', color: 'bat' },
-      ],
-      area_acciones2: [
-        {
-          label: 'Inversion social',
-          value: 'inversion_social',
-          color: 'bat',
-        },
-        {
-          label: 'Desarrollo social',
-          value: 'desarrollo_social',
-          color: 'bat',
-        },
-        {
-          label: 'Seguridad alimentaria y nutricional',
-          value: 'seguridad_alimentaria_nutricional',
-          color: 'bat',
-        },
-      ],
+      area_accion: ref([]),
+      edadlist: ref([]),
       pagination: {
         rowsPerPage: 20,
       },
+      Observaciones: '',
+      Sugerencias: '',
+      CantidadNinos: 0,
+      CantidadNinas: 0,
+      CantidadAdultoMayor: 0,
+      CantidadDiscapacidad: 0,
+      CantidadMujeresEmbarazadas: 0,
+      EjecucionMonitoreada: 0,
     };
   },
 
   methods: {
-    redirect(redirect) {
-      this.$router.push(redirect);
-    },
     toggleFullScreen() {
       this.isFullScreen = !this.isFullScreen;
     },
-    generateYearOptions() {
-      const currentYear = new Date().getFullYear();
-      const startYear = currentYear - 100; // Cambia esto si necesitas otro rango de años
-      const years = [];
-      for (let year = currentYear; year >= startYear; year--) {
-        years.push(year);
-      }
-      return years;
+    guardarinfo() {
+      const listadounidades = this.datoslista.unidades.map((item) => ({
+        id: item.value,
+        check: this.unidad_accion.includes(item.value),
+      }));
+
+      const listadogeneros = this.datoslista.generos.map((item) => ({
+        id: item.value,
+        check: this.genero.includes(item.value),
+      }));
+
+      const listadoareas = this.datoslista.areas.map((item) => ({
+        id: item.value,
+        check: this.area.includes(item.value),
+      }));
+
+      const listadopueblos = this.datoslista.gruposoriginarios.map((item) => ({
+        id: item.value,
+        check: this.pueblo.includes(item.value),
+      }));
+
+      const listadovulnerables = this.datoslista.vulnerables.map((item) => ({
+        id: item.value,
+        check: this.grup_vulnerable.includes(item.value),
+      }));
+
+      const listadoareasaccion = this.datoslista.areaaccion.map((item) => ({
+        id: item.value,
+        check: this.area_accion.includes(item.value),
+      }));
+
+      const listadoedades = this.datoslista.edades.map((item) => ({
+        id: item.value,
+        check: this.edadlist.includes(item.value),
+      }));
+
+      this.$apiLogin
+        .post('/api/EjecucionMonitoreada/Guardarinfo', {
+          listadounidades: listadounidades,
+          listadogeneros: listadogeneros,
+          listadoareas: listadoareas,
+          listadopueblos: listadopueblos,
+          listadovulnerables: listadovulnerables,
+          listadoareasaccion: listadoareasaccion,
+          listadoedades: listadoedades,
+          IDFicha: this.datos.idFicha,
+          IDCodigoInstitucion: this.datos.idInstitucionPorFicha,
+          IDComponentePorFicha: this.datos.idcomponentePorFicha,
+          Observaciones: this.Observaciones,
+          Sugerencias: this.Sugerencias,
+          CantidadNinos: this.CantidadNinos,
+          CantidadNinas: this.CantidadNinas,
+          CantidadAdultoMayor: this.CantidadAdultoMayor,
+          CantidadDiscapacidad: this.CantidadDiscapacidad,
+          CantidadMujeresEmbarazadas: this.CantidadMujeresEmbarazadas,
+          EjecucionReportada: this.datos.ejecutado,
+          EjecucionMonitoreada: this.EjecucionMonitoreada,
+          Latitude: this.coordinates.latitude,
+          Longitude: this.coordinates.longitude,
+          empleado:
+            this.store.user[
+              'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
+            ],
+        })
+        .then(() => {
+          this.$swal.fire({
+            title: 'Guardado con exito!',
+            confirmButtonColor: '#2979ff',
+            icon: 'success',
+            showConfirmButton: true,
+            timer: 3000,
+          });
+          this.$router.push({ path: '/ejecucion_monitoreada' });
+        })
+        .catch(() => {
+          this.error = 'Ocurrió un error';
+          // eslint-disable-next-line no-alert
+          alert('Datos Incorrectos..');
+        });
     },
+    listaitems() {
+      this.$apiLogin
+        .get('/api/EjecucionMonitoreada/Listaritems')
+        .then((respuesta) => {
+          this.datoslista = respuesta.data;
+        })
+        .catch(() => {
+          this.error = 'Ocurrió un error';
+          // eslint-disable-next-line no-alert
+          alert('Datos Incorrectos..');
+        });
+    },
+    buscar() {
+      this.rows = [];
+      this.$apiLogin
+        .get(
+          `/api/EjecucionMonitoreada/ListarDatosFichasDTO/${this.$route.params.id}`
+        )
+        .then((respuesta) => {
+          this.datos = respuesta.data;
+        })
+        .catch(() => {
+          this.error = 'Ocurrió un error';
+          // eslint-disable-next-line no-alert
+          alert('Datos Incorrectos..');
+        });
+    },
+
+    getCoordinates() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            this.coordinates = {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            };
+          },
+          (error) => {
+            console.error('Error getting location: ', error);
+          }
+        );
+      } else {
+        console.error('Geolocation is not supported by this browser.');
+      }
+    },
+  },
+  created() {
+    this.buscar();
+    this.listaitems();
   },
 };
 </script>

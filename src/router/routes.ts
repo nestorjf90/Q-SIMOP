@@ -24,7 +24,7 @@ const routes: RouteRecordRaw[] = [
         meta: { libre: true },
       },
       {
-        path: '/ingreso_monitoreo',
+        path: '/ingreso_monitoreo/:id',
         component: () => import('src/pages/Ejecucion/Ingreso_monitoreo.vue'),
         meta: { libre: true },
       },

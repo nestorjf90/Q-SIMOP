@@ -67,6 +67,7 @@
 
 <script type="text/javascript">
 import { ref } from 'vue';
+import { useStore } from '../../stores/login';
 
 export default {
   data() {
@@ -80,6 +81,36 @@ export default {
   methods: {
     redirect(redirect) {
       this.$router.push(redirect);
+    },
+    ingresar() {
+      const store = useStore();
+      this.$api
+        .post('api/Security/Login', {
+          usuario: this.email,
+          password: this.password,
+        })
+        .then((respuesta) => {
+          const datal = respuesta.data.token;
+          store.guardarToken(datal);
+          this.$router.push({ path: 'ejecucion_monitoreada' });
+        })
+        .catch((err) => {
+          if (err.response.status === 400) {
+            this.error = 'No es un email valido';
+            // eslint-disable-next-line no-alert
+            this.$swal('Datos Incorrectos. Verifica tu contraseña o correo');
+          } else if (err.response.status === 404) {
+            this.error = 'No existe el usuario o sus datos son incorrectos';
+            // eslint-disable-next-line no-alert
+            this.$swal(
+              'Datos incorrectos verifica tu contraseña o correo electrónico.'
+            );
+          } else {
+            this.error = 'Ocurrió un error';
+            // eslint-disable-next-line no-alert
+            alert('Datos Incorrectos..');
+          }
+        });
     },
   },
 };

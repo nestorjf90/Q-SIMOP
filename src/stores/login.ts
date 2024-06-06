@@ -13,10 +13,10 @@ export const useStore = defineStore('storeId', {
   },
 
   actions: {
-    guardarToken(token: { accessToken: string }) {
-      this.usuario = jwtDecode(token.accessToken);
+    guardarToken(token: string) {
+      this.usuario = jwtDecode(token);
       this.isLogged = true;
-      token.accessToken = token.accessToken;
+      token = token;
 
       apiLogin.defaults.headers.Authorization = `Bearer ${token}`;
     },

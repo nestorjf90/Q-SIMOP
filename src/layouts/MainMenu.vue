@@ -11,7 +11,7 @@
           </q-toolbar-title>
         </div>
         <div class="col-10 col-md-4" align="right">
-          <label style="color: #81a1cd; padding: 10px">Nestor Flores</label>
+          <label style="color: #81a1cd; padding: 10px">{{ nombre }}</label>
           <q-btn-dropdown
             flat
             style="padding: 3px"
@@ -53,7 +53,7 @@
                 </q-item-section>
               </q-item> -->
               <q-item clickable v-close-popup @click="logout()">
-                <q-item-section>
+                <q-item-section @click="logout()">
                   <q-item-label>Cerrar Sesión</q-item-label>
                 </q-item-section>
               </q-item>
@@ -129,11 +129,12 @@
 
 <script>
 import { ref } from 'vue';
-
+import { useStore } from '../stores/login';
 export default {
   name: 'GoogleNewsLayout',
 
   setup() {
+    const store = useStore();
     const leftDrawerOpen = ref(false);
     const search = ref('');
     const showAdvanced = ref(false);
@@ -144,7 +145,7 @@ export default {
     const byWebsite = ref('');
     const byDate = ref('Any time');
     const modoClaro = ref(false);
-
+    const nombre = '';
     function onClear() {
       exactPhrase.value = '';
       hasWords.value = '';
@@ -165,9 +166,9 @@ export default {
     return {
       leftDrawerOpen,
       modoClaro,
-
+      store,
       search,
-
+      nombre,
       showAdvanced,
       showDateOptions,
       exactPhrase,
@@ -204,6 +205,13 @@ export default {
     redirect(redirect) {
       this.$router.push(redirect);
     },
+    logout() {
+      this.store.$reset();
+      this.$router.push('/');
+    },
+  },
+  created() {
+    this.nombre = this.store.user.name;
   },
 };
 </script>
