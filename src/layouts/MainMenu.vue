@@ -103,7 +103,7 @@
           </q-list>
           <q-expansion-item
             expand-separator
-            label="Mantenimientos"
+            label="Priorización de programas"
             icon="settings"
           >
             <div v-for="link in listadolinks.opciones" :key="link.text">
@@ -179,20 +179,21 @@ export default {
       open: '',
       // links: ref('Inicio'),
       listadolinks: {
-        links1: [
-          {
-            text: 'modo',
-            estado: true,
-            acceso: ['todos'],
-          },
-          //   {
-          //     icon: 'add',
-          //     link: '/ejecucion_monitoreada',
-          //     text: 'Ejecución monitoreo',
-          //     estado: true,
-          //   },
-          // ],
-          // opciones: [{ text: 'Prueba', link: '/prueba' }
+        // links1: [
+        //   {
+        //     icon: 'person',
+        //     link: '/ejecucion_monitoreada',
+        //     text: 'Usuarios',
+        //   },
+        //   { icon: 'group', text: 'Clientes', link: '/list_customers' },
+        //   { icon: 'groups', text: 'Asegurados', link: '/list_insured' },
+        //   { icon: 'list_alt', text: 'Póliza', link: '/list_policy' },
+        //   { icon: 'show_chart', text: 'Reportes', link: '/root' },
+        // ],
+        opciones: [
+          { text: 'Priorización de Programas', link: '/ejecucion_monitoreada' },
+          { text: 'Ingresos', link: '/ingresos' },
+          // { text: 'Ocupación', link: '/new_occupation' },
         ],
       },
       onClear,

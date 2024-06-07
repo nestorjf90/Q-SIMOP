@@ -331,11 +331,10 @@
           </div>
 
           <div class="col-12">
-            <q-btn label="Get Coordinates" @click="getCoordinates" />
-            <div v-if="coordinates">
+            <div v-if="position">
               <div class="col-12 col-md-6">
                 <q-input
-                  v-model="coordinates.latitude"
+                  v-model="position.latitude"
                   label="Latitud"
                   outlined
                   autogrow
@@ -344,7 +343,7 @@
               </div>
               <div class="col-12 col-md-6">
                 <q-input
-                  v-model="coordinates.longitude"
+                  v-model="position.longitude"
                   label="Longitud"
                   outlined
                   autogrow
@@ -362,6 +361,7 @@
               no-caps
               icon="chevron_left"
               outlined
+              @click="regresar()"
             />
           </div>
           <div class="col-6">
@@ -385,15 +385,20 @@
 <script>
 import { ref } from 'vue';
 import { useStore } from '../../stores/login';
+import { Geolocation } from '@capacitor/geolocation';
 
 export default {
+  mounted() {
+    this.getCurrentPosition();
+  },
   setup() {
     const store = useStore();
     return { store };
   },
   data() {
     return {
-      coordinates: null,
+      position: null,
+      coordinates: {},
       datos: [],
       datoslista: [],
       isFullScreen: false,
@@ -422,6 +427,21 @@ export default {
   },
 
   methods: {
+    regresar() {
+      this.$router.push({ path: '/ejecucion_monitoreada' });
+    },
+    async getCurrentPosition() {
+      try {
+        const coordinates = await Geolocation.getCurrentPosition();
+        this.position = {
+          latitude: coordinates.coords.latitude,
+          longitude: coordinates.coords.longitude,
+        };
+      } catch (e) {
+        alert(e);
+        this.error = e.message;
+      }
+    },
     toggleFullScreen() {
       this.isFullScreen = !this.isFullScreen;
     },
@@ -482,8 +502,8 @@ export default {
           CantidadMujeresEmbarazadas: this.CantidadMujeresEmbarazadas,
           EjecucionReportada: this.datos.ejecutado,
           EjecucionMonitoreada: this.EjecucionMonitoreada,
-          Latitude: this.coordinates.latitude,
-          Longitude: this.coordinates.longitude,
+          Latitude: this.position.latitude,
+          Longitude: this.position.longitude,
           empleado:
             this.store.user[
               'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
@@ -531,24 +551,6 @@ export default {
           // eslint-disable-next-line no-alert
           alert('Datos Incorrectos..');
         });
-    },
-
-    getCoordinates() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            this.coordinates = {
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
-            };
-          },
-          (error) => {
-            console.error('Error getting location: ', error);
-          }
-        );
-      } else {
-        console.error('Geolocation is not supported by this browser.');
-      }
     },
   },
   created() {

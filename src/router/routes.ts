@@ -24,8 +24,18 @@ const routes: RouteRecordRaw[] = [
         meta: { libre: true },
       },
       {
+        path: '/ingresos',
+        component: () => import('src/pages/Ejecucion/Lista_ingresos.vue'),
+        meta: { libre: true },
+      },
+      {
         path: '/ingreso_monitoreo/:id',
         component: () => import('src/pages/Ejecucion/Ingreso_monitoreo.vue'),
+        meta: { libre: true },
+      },
+      {
+        path: '/ver_monitoreo/:id/:idmonitoreo',
+        component: () => import('src/pages/Ejecucion/Ver_monitoreo.vue'),
         meta: { libre: true },
       },
     ],

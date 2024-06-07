@@ -132,7 +132,7 @@ h4 {
   padding-top: 0px;
 }
 #hero {
-  background-image: url('/3055.jpg');
+  background-color: white;
   background-position: center; /* Center the image */
   background-repeat: no-repeat; /* Do not repeat the image */
   background-size: cover;

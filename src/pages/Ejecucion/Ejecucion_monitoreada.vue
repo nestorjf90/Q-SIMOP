@@ -60,11 +60,7 @@
                     label="Monitorear"
                     flat
                     dense
-                    @click="
-                      redirect(
-                        `/ingreso_monitoreo/${props.row.idComponentePorFicha}`
-                      )
-                    "
+                    @click="redirect(`/ingreso_monitoreo/${props.row.idFicha}`)"
                   />
                 </q-card-section>
                 <q-separator></q-separator>

@@ -1,8 +1,9 @@
 <template>
-  <q-layout
+  <q-layout view="lHh Lpr lFf" style="background: white">
+    <!-- <q-layout
     view="lHh Lpr lFf"
     style="background: linear-gradient(#64aee5, #7de7da)"
-  >
+  > -->
     <q-header elevated style="background-color: #eceff1">
       <q-toolbar>
         <q-toolbar-title>
