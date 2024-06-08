@@ -2,9 +2,7 @@
   <q-layout view="lHh lpR lFF" class="shadow-2 rounded-borders">
     <q-header elevated reveal class="bg-white text-black">
       <q-toolbar class="col-12">
-        <div class="col-2 col-md-5">
-          <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
-        </div>
+        <div class="col-2 col-md-5"></div>
         <div class="col-12 col-md-3" v-if="$q.screen.gt.xs">
           <q-toolbar-title shrink class="row items-center no-wrap">
             <img src="/logo.jpg" style="height: 60px; max-width: 980px" />
@@ -23,7 +21,7 @@
             transition-hide="slide-right"
             transition-duration="700"
           >
-            <q-list
+            <!-- <q-list
               bordered
               v-ripple
               style="border-color: #62645d7c #62645d7c; color: rgb(0, 0, 0)"
@@ -47,83 +45,41 @@
                 </q-item-section>
               </q-item>
               <q-separator spaced inset="item"></q-separator>
-              <!-- <q-item clickable v-close-popup @click="cvdiseño3()">
-                <q-item-section>
-                  <q-item-label>Cambio de contraseña</q-item-label>
-                </q-item-section>
-              </q-item> -->
               <q-item clickable v-close-popup @click="logout()">
                 <q-item-section @click="logout()">
                   <q-item-label>Cerrar Sesión</q-item-label>
                 </q-item-section>
               </q-item>
-            </q-list>
+            </q-list> -->
           </q-btn-dropdown>
         </div>
       </q-toolbar>
     </q-header>
-    <q-drawer
-      v-model="leftDrawerOpen"
-      side="left"
-      bordered
-      show-if-above
-      class="fondo"
-      mini-animation
-      :mini-width="110"
-      :mini="ministate"
-      :width="270"
-    >
-      <q-scroll-area id="scrol">
-        <q-card :class="[modoClaro ? 'modo-oscuro' : 'modo-claro']">
-          <q-icon
-            :name="modoClaro ? 'wb_sunny' : 'nights_stay'"
-            size="sm"
-            padding="3px"
-            @click="toggleModoClaro()"
-          />
-          <br />
-          <br />
-          <q-list padding>
-            <div v-for="link in listadolinks.links1" :key="link.text">
-              <q-item
-                class="GNL__drawer-item"
-                v-ripple
-                :to="link.link"
-                clickable
-                v-if="link.estado && link.text !== 'modo'"
-              >
-                <q-item-section avatar>
-                  <q-icon :name="link.icon" />
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label>{{ link.text }}</q-item-label>
-                </q-item-section>
-              </q-item>
-            </div>
-          </q-list>
-          <q-expansion-item
-            expand-separator
-            label="Priorización de programas"
-            icon="settings"
-          >
-            <div v-for="link in listadolinks.opciones" :key="link.text">
-              <q-item class="GNL__drawer-item" v-ripple :to="link.link" lin>
-                <q-item-section avatar>
-                  <q-icon :name="link.icon" />
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label>{{ link.text }}</q-item-label>
-                </q-item-section>
-              </q-item>
-            </div>
-          </q-expansion-item>
-        </q-card>
-      </q-scroll-area>
-    </q-drawer>
-
     <q-page-container>
       <router-view />
     </q-page-container>
+    <q-footer reveal elevated class="bg-blue-8 text-white">
+      <q-tabs v-model="tab" class="text-white">
+        <q-tab
+          name="programas"
+          icon="home"
+          label="Priorización"
+          @click="redirect('/ejecucion_monitoreada')"
+        ></q-tab>
+        <q-tab
+          name="ingresos"
+          icon="more"
+          label="Monitoreos"
+          @click="redirect('/ingresos')"
+        ></q-tab>
+        <q-tab
+          name="session"
+          icon="exit_to_app"
+          label="Logout"
+          @click="logout()"
+        ></q-tab>
+      </q-tabs>
+    </q-footer>
   </q-layout>
 </template>
 
@@ -192,7 +148,7 @@ export default {
         // ],
         opciones: [
           { text: 'Priorización de Programas', link: '/ejecucion_monitoreada' },
-          { text: 'Ingresos', link: '/ingresos' },
+          { text: 'Monitoreos', link: '/ingresos' },
           // { text: 'Ocupación', link: '/new_occupation' },
         ],
       },

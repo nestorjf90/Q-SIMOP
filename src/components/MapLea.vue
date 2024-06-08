@@ -23,6 +23,12 @@ export default {
   mounted() {
     // Inicializa el mapa
     const map = L.map('map').setView([this.lat, this.lng], 13);
+    const blueIcon = L.icon({
+      iconUrl: 'marker-icon.png',
+      iconSize: [38, 55], // size of the icon
+      iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
+      popupAnchor: [-3, -76], // point from which the popup should open relative to the iconAnchor
+    });
 
     // Añade una capa de mapa (en este caso OpenStreetMap)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -31,9 +37,9 @@ export default {
     }).addTo(map);
 
     // Añade un marcador en la posición especificada
-    L.marker([this.lat, this.lng])
+    L.marker([this.lat, this.lng], { icon: blueIcon })
       .addTo(map)
-      .bindPopup('Aca está tu punto')
+      .bindPopup('Punto proporcionado')
       .openPopup();
   },
 };

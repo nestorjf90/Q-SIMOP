@@ -16,7 +16,7 @@
           flat
           bordered
           grid
-          title="Lista de ingreso de monitoreo de programas"
+          title="Lista de monitoreos ingresados de programas"
           :rows="rows"
           :columns="columns"
           row-key="name"

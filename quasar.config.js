@@ -48,7 +48,7 @@ module.exports = configure(function (/* ctx */) {
       env: {
         // API: 'https://localhost:44379/',
         // API: "https://d51b-2803-4600-1111-11dc-bd86-3182-971b-e7e7.ngrok-free.app/",
-        API: 'https://75c9-2803-4600-1111-11dc-44e-4296-82a-3506.ngrok-free.app/',
+        API: 'https://0966-2803-4600-1111-11dc-c898-a428-9197-b2af.ngrok-free.app/',
       },
       // vueRouterBase,
       // vueDevtools,

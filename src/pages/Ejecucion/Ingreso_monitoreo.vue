@@ -3,7 +3,7 @@
     <div class="row q-col-gutter-sm">
       <q-toolbar class="bg-positive text-white">
         <q-toolbar-title icon="close" glossy
-          >Ingreso de monitoreo</q-toolbar-title
+          >Registro de monitoreo</q-toolbar-title
         >
       </q-toolbar>
     </div>
@@ -177,12 +177,13 @@
           <div class="col-12 col-md-4">
             <q-input
               v-model="EjecucionMonitoreada"
-              type="text"
+              type="number"
               label="Ejecucion monitoreada"
               label-color="primary"
               color="accent"
               outlined
               dense
+              :rules="[numberRule]"
             >
             </q-input>
           </div>
@@ -253,60 +254,65 @@
           <div class="col-12 col-md-4">
             <q-input
               v-model="CantidadNinos"
-              type="text"
+              type="number"
               label="Cantidad niños "
               label-color="primary"
               color="accent"
               outlined
               dense
+              :rules="[numberRule]"
             >
             </q-input>
           </div>
           <div class="col-12 col-md-4">
             <q-input
               v-model="CantidadNinas"
-              type="text"
+              type="number"
               label="Cantidad niñas "
               label-color="primary"
               color="accent"
               outlined
               dense
+              :rules="[numberRule]"
             >
             </q-input>
           </div>
           <div class="col-12 col-md-4">
             <q-input
               v-model="CantidadAdultoMayor"
-              type="text"
+              type="number"
               label="Cantidad adulto mayor "
               label-color="primary"
               color="accent"
               outlined
               dense
+              :rules="[numberRule]"
             >
             </q-input>
           </div>
           <div class="col-12 col-md-4">
             <q-input
               v-model="CantidadMujeresEmbarazadas"
-              type="text"
+              type="number"
               label="Cantidad mujeres embarazadas"
               label-color="primary"
               color="accent"
               outlined
               dense
+              :rules="[numberRule]"
             >
             </q-input>
           </div>
           <div class="col-12 col-md-4">
             <q-input
               v-model="CantidadDiscapacidad"
-              type="text"
+              type="number"
               label="Cantidad con discapacidad"
               label-color="primary"
               color="accent"
               outlined
               dense
+              :rules="[numberRule]"
             >
             </q-input>
           </div>
@@ -423,10 +429,16 @@ export default {
       CantidadDiscapacidad: 0,
       CantidadMujeresEmbarazadas: 0,
       EjecucionMonitoreada: 0,
+      numberRule: (val) => !isNaN(val) || 'Solo se permiten numeros',
     };
   },
 
   methods: {
+    setDefaultValue() {
+      if (this.numberValue === null || this.numberValue === '') {
+        this.numberValue = 0;
+      }
+    },
     regresar() {
       this.$router.push({ path: '/ejecucion_monitoreada' });
     },
@@ -495,13 +507,34 @@ export default {
           IDComponentePorFicha: this.datos.idcomponentePorFicha,
           Observaciones: this.Observaciones,
           Sugerencias: this.Sugerencias,
-          CantidadNinos: this.CantidadNinos,
-          CantidadNinas: this.CantidadNinas,
-          CantidadAdultoMayor: this.CantidadAdultoMayor,
-          CantidadDiscapacidad: this.CantidadDiscapacidad,
-          CantidadMujeresEmbarazadas: this.CantidadMujeresEmbarazadas,
+          CantidadNinos:
+            this.CantidadNinos === null || this.CantidadNinos === ''
+              ? 0
+              : this.CantidadNinos,
+          CantidadNinas:
+            this.CantidadNinas === null || this.CantidadNinas === ''
+              ? 0
+              : this.CantidadNinas,
+          CantidadAdultoMayor:
+            this.CantidadAdultoMayor === null || this.CantidadAdultoMayor === ''
+              ? 0
+              : this.CantidadAdultoMayor,
+          CantidadDiscapacidad:
+            this.CantidadDiscapacidad === null ||
+            this.CantidadDiscapacidad === ''
+              ? 0
+              : this.CantidadDiscapacidad,
+          CantidadMujeresEmbarazadas:
+            this.CantidadMujeresEmbarazadas === null ||
+            this.CantidadMujeresEmbarazadas === ''
+              ? 0
+              : this.CantidadMujeresEmbarazadas,
           EjecucionReportada: this.datos.ejecutado,
-          EjecucionMonitoreada: this.EjecucionMonitoreada,
+          EjecucionMonitoreada:
+            this.EjecucionMonitoreada === null ||
+            this.EjecucionMonitoreada === ''
+              ? 0
+              : this.EjecucionMonitoreada,
           Latitude: this.position.latitude,
           Longitude: this.position.longitude,
           empleado:
