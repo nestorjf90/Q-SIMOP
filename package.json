@@ -2,7 +2,7 @@
   "name": "q-simop",
   "version": "0.0.1",
   "description": "App Movil SIMOP",
-  "productName": "SIMOP App",
+  "productName": "SIMOP",
   "author": "nestorjf <nestorjf90@gmail.com>",
   "private": true,
   "scripts": {

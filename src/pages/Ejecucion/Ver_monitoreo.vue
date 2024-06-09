@@ -172,15 +172,16 @@
             >
             </q-input>
           </div>
-          <div class="col-12 col-md-4">
+          <div class="col-12 col-md-4" v-if="datoslista.monitoreo">
             <q-input
-              v-model="EjecucionMonitoreada"
+              v-model="datoslista.monitoreo.ejecucionMonitoreada"
               type="text"
               label="Ejecucion monitoreada"
               label-color="primary"
               color="accent"
               outlined
               dense
+              disable
             >
             </q-input>
           </div>

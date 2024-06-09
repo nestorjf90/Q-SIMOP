@@ -1,5 +1,5 @@
 {
-  "appId": "org.capacitor.quasar.app",
-  "appName": "SIMOP App",
+  "appId": "org.sedesol.simop.app",
+  "appName": "SIMOP",
   "webDir": "www"
 }

@@ -5,7 +5,7 @@
         <div class="col-2 col-md-5"></div>
         <div class="col-12 col-md-3" v-if="$q.screen.gt.xs">
           <q-toolbar-title shrink class="row items-center no-wrap">
-            <img src="/logo.jpg" style="height: 60px; max-width: 980px" />
+            <img src="/logo.png" style="height: 60px; max-width: 980px" />
           </q-toolbar-title>
         </div>
         <div class="col-10 col-md-4" align="right">
@@ -21,36 +21,6 @@
             transition-hide="slide-right"
             transition-duration="700"
           >
-            <!-- <q-list
-              bordered
-              v-ripple
-              style="border-color: #62645d7c #62645d7c; color: rgb(0, 0, 0)"
-            >
-              <q-separator spaced inset="item"></q-separator>
-              <q-item
-                clickable
-                v-close-popup
-                @click="redirect()"
-                style="border-color: #fb7e52"
-              >
-                <q-item-section top avatar>
-                  <q-avatar
-                    style="background-color: #81a1cd; color: azure"
-                    icon="person"
-                  >
-                  </q-avatar>
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label>Usuario </q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-separator spaced inset="item"></q-separator>
-              <q-item clickable v-close-popup @click="logout()">
-                <q-item-section @click="logout()">
-                  <q-item-label>Cerrar Sesión</q-item-label>
-                </q-item-section>
-              </q-item>
-            </q-list> -->
           </q-btn-dropdown>
         </div>
       </q-toolbar>
@@ -58,17 +28,17 @@
     <q-page-container>
       <router-view />
     </q-page-container>
-    <q-footer reveal elevated class="bg-blue-8 text-white">
+    <q-footer reveal elevated class="bg-red-8 text-white">
       <q-tabs v-model="tab" class="text-white">
         <q-tab
           name="programas"
-          icon="home"
+          icon="analytics"
           label="Priorización"
           @click="redirect('/ejecucion_monitoreada')"
         ></q-tab>
         <q-tab
           name="ingresos"
-          icon="more"
+          icon="description"
           label="Monitoreos"
           @click="redirect('/ingresos')"
         ></q-tab>

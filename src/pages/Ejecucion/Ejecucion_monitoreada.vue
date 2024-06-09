@@ -22,6 +22,7 @@
           row-key="name"
           :filter="filter"
           hide-header
+          v-model:pagination="pagination"
         >
           <template v-slot:top-right>
             <q-input
@@ -143,6 +144,10 @@ export default {
         comision_porcentaje: null,
       },
       editedIndex: -1,
+      pagination: {
+        page: 1,
+        rowsPerPage: 15,
+      },
     };
   },
   // eslint-disable-next-line @typescript-eslint/no-empty-function
