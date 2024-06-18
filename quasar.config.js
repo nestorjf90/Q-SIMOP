@@ -47,8 +47,8 @@ module.exports = configure(function (/* ctx */) {
       vueRouterMode: 'hash', // available values: 'hash', 'history'
       env: {
         // API: 'https://localhost:44379/',
-        // API: "https://d51b-2803-4600-1111-11dc-bd86-3182-971b-e7e7.ngrok-free.app/",
-        API: 'https://0966-2803-4600-1111-11dc-c898-a428-9197-b2af.ngrok-free.app/',
+        // API: 'https://1f46-2803-4600-1111-11dc-c52b-cf36-fcb4-d60f.ngrok-free.app/',
+        API: 'https://2z46xv2b-44379.use.devtunnels.ms/',
       },
       // vueRouterBase,
       // vueDevtools,

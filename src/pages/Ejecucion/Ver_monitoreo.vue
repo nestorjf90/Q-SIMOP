@@ -251,7 +251,7 @@
             />
           </div>
           <div class="col-12" v-if="datoslista.generos">
-            <label style="font-weight: bold">Area de accion</label>
+            <label style="font-weight: bold">Edades</label>
             <q-checkbox
               v-for="item in datoslista.edades"
               :key="item.label"
@@ -372,7 +372,34 @@
               </div>
             </div>
           </div>
-
+          <div class="col-12">
+            <q-list>
+              <q-item
+                v-for="(image, index) in datoslista.listaimagenes"
+                :key="index"
+              >
+                <q-img
+                  :src="`data:image/jpg;base64,${image.imgbase64file}`"
+                  alt="image"
+                  width="10"
+                  no-native-menu
+                  @click="
+                    viewImage(`data:image/jpg;base64,${image.imgbase64file}`)
+                  "
+                >
+                  <div
+                    @click.stop="
+                      downloadImage(image.imgbase64file, image.nameFile)
+                    "
+                    class="absolute-bottom text-subtitle1 text-center"
+                  >
+                    <q-icon name="download"></q-icon>
+                    Descargar imagen
+                  </div>
+                </q-img>
+              </q-item>
+            </q-list>
+          </div>
           <div class="col-12" v-if="datoslista.monitoreo">
             <q-page-container>
               <MapComponent
@@ -381,8 +408,7 @@
               />
             </q-page-container>
           </div>
-
-          <div class="col-6">
+          <div class="col-12">
             <q-btn
               color="red"
               label="Regresar"
@@ -397,6 +423,20 @@
         </div>
       </div>
     </q-card>
+    <q-dialog v-model="isDialogOpen" full-width full-height>
+      <q-card class="q-pa-none">
+        <q-img :src="currentImage" style="height: 100vh; width: 100%" />
+        <q-btn
+          icon="close"
+          class="absolute-top-right"
+          color="negative"
+          @click="isDialogOpen = false"
+          flat
+          round
+          dense
+        />
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -404,14 +444,21 @@
 import { ref } from 'vue';
 import { useStore } from '../../stores/login';
 import MapComponent from 'components/MapLea.vue';
+import { Filesystem, Directory } from '@capacitor/filesystem';
 
 export default {
   components: {
     MapComponent,
   },
   setup() {
+    const currentImage = ref(null);
+    const isDialogOpen = ref(false);
+    const viewImage = (image) => {
+      currentImage.value = image;
+      isDialogOpen.value = true;
+    };
     const store = useStore();
-    return { store };
+    return { store, viewImage, currentImage, isDialogOpen };
   },
   data() {
     return {
@@ -445,6 +492,32 @@ export default {
   },
 
   methods: {
+    blobToBase64(blob) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+    },
+    async downloadImage(id, fileName) {
+      try {
+        Filesystem.writeFile({
+          path: fileName,
+          data: id,
+          directory: Directory.Documents,
+        });
+        this.$swal.fire({
+          title: 'Imagen descargada exitosamente',
+          confirmButtonColor: '#2979ff',
+          icon: 'success',
+          showConfirmButton: true,
+          timer: 3000,
+        });
+      } catch (e) {
+        console.error('Unable to save file', e);
+      }
+    },
     regresar() {
       this.$router.push({ path: '/ingresos' });
     },

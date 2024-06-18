@@ -150,7 +150,7 @@
           </div>
           <div class="col-12 col-md-4">
             <q-input
-              v-model="presupuesto"
+              v-model="datos.monto"
               type="text"
               label="Presupuestado"
               label-color="primary"
@@ -163,7 +163,7 @@
           </div>
           <div class="col-12 col-md-4">
             <q-input
-              v-model="ejecucion_total"
+              v-model="datos.ejecutado"
               type="text"
               label="Ejecucion total reportada"
               label-color="primary"
@@ -241,7 +241,7 @@
             />
           </div>
           <div class="col-12" v-if="datoslista.generos">
-            <label style="font-weight: bold">Area de accion</label>
+            <label style="font-weight: bold">Edades</label>
             <q-option-group
               :options="datoslista.edades"
               type="checkbox"
@@ -337,25 +337,57 @@
           </div>
 
           <div class="col-12">
-            <div v-if="position">
-              <div class="col-12 col-md-6">
-                <q-input
-                  v-model="position.latitude"
-                  label="Latitud"
-                  outlined
-                  autogrow
-                  disable
-                />
-              </div>
-              <div class="col-12 col-md-6">
-                <q-input
-                  v-model="position.longitude"
-                  label="Longitud"
-                  outlined
-                  autogrow
-                  disable
-                />
-              </div>
+            <div v-if="position" class="col-12 col-md-6">
+              <q-input
+                v-model="position.latitude"
+                label="Latitud"
+                outlined
+                autogrow
+                disable
+              />
+            </div>
+            <div v-if="position" class="col-12 col-md-6">
+              <q-input
+                v-model="position.longitude"
+                label="Longitud"
+                outlined
+                autogrow
+                disable
+                align="left"
+              />
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="col-12 col-md-6">
+              <q-btn label="Tomar Foto" @click="takePhoto" color="primary" />
+              <q-btn
+                label="Seleccionar desde galeria"
+                @click="takePhotoFromGallery"
+                color="primary"
+                align="right"
+              />
+              <q-list>
+                <q-item v-for="(image, index) in photos" :key="index">
+                  <q-item-section
+                    @click="viewImage(image.idf + image.imgbase64)"
+                  >
+                    <q-img
+                      :src="image.idf + image.imgbase64"
+                      alt="image"
+                      width="10"
+                      no-native-menu
+                    >
+                      <div
+                        @click.stop="removeImage(index)"
+                        class="absolute-bottom text-subtitle1 text-center"
+                      >
+                        <q-icon name="delete"></q-icon>
+                        Eliminar
+                      </div>
+                    </q-img>
+                  </q-item-section>
+                </q-item>
+              </q-list>
             </div>
           </div>
           <div class="col-6">
@@ -380,11 +412,26 @@
               icon="save"
               @click="guardarinfo"
               outlined
+              :disabled="isdisable"
             />
           </div>
         </div>
       </div>
     </q-card>
+    <q-dialog v-model="isDialogOpen" full-width full-height>
+      <q-card class="q-pa-none">
+        <q-img :src="currentImage" style="height: 100vh; width: 100%" />
+        <q-btn
+          icon="close"
+          class="absolute-top-right"
+          color="negative"
+          @click="isDialogOpen = false"
+          flat
+          round
+          dense
+        />
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -392,6 +439,7 @@
 import { ref } from 'vue';
 import { useStore } from '../../stores/login';
 import { Geolocation } from '@capacitor/geolocation';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 export default {
   mounted() {
@@ -399,10 +447,73 @@ export default {
   },
   setup() {
     const store = useStore();
-    return { store };
+    const photos = ref([]);
+    const listadoimagenes = ref([]);
+    const isDialogOpen = ref(false);
+    const currentImage = ref(null);
+
+    const takePhoto = async () => {
+      const image = await Camera.getPhoto({
+        source: CameraSource.Camera,
+        quality: 90,
+        resultType: CameraResultType.Base64,
+      });
+      photos.value.push({
+        format: image.format,
+        imgbase64: image.base64String,
+        idf: `data:image/${image.format};base64,`,
+      });
+    };
+    const takePhotoFromGallery = async () => {
+      const result = await Camera.pickImages({
+        quality: 90,
+        limit: 10, // Define el límite de imágenes a seleccionar
+      });
+      result.photos.forEach(async (photo) => {
+        photos.value.push({
+          format: photo.format,
+          imgbase64: await convertWebPathToBase64(photo.webPath),
+          idf: `data:image/${photo.format};base64,`,
+        });
+      });
+    };
+    const removeImage = (index) => {
+      photos.value.splice(index, 1);
+    };
+    const viewImage = (image) => {
+      currentImage.value = image;
+      isDialogOpen.value = true;
+    };
+    const convertWebPathToBase64 = async (webPath) => {
+      const response = await fetch(webPath);
+      const blob = await response.blob();
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          resolve(reader.result.split(',')[1]);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+    };
+    return {
+      store,
+      photos,
+      takePhoto,
+      takePhotoFromGallery,
+      removeImage,
+      viewImage,
+      isDialogOpen,
+      currentImage,
+      // dataURLtoFile,
+      // blobURLtoFile,
+      listadoimagenes,
+      convertWebPathToBase64,
+    };
   },
   data() {
     return {
+      isdisable: false,
       position: null,
       coordinates: {},
       datos: [],
@@ -457,7 +568,8 @@ export default {
     toggleFullScreen() {
       this.isFullScreen = !this.isFullScreen;
     },
-    guardarinfo() {
+    async guardarinfo() {
+      this.isdisable = true;
       const listadounidades = this.datoslista.unidades.map((item) => ({
         id: item.value,
         check: this.unidad_accion.includes(item.value),
@@ -492,7 +604,13 @@ export default {
         id: item.value,
         check: this.edadlist.includes(item.value),
       }));
-
+      let datosfotos = [];
+      await this.photos.forEach((element) => {
+        datosfotos.push({
+          imgb64: element.imgbase64,
+          format: element.format,
+        });
+      });
       this.$apiLogin
         .post('/api/EjecucionMonitoreada/Guardarinfo', {
           listadounidades: listadounidades,
@@ -529,7 +647,7 @@ export default {
             this.CantidadMujeresEmbarazadas === ''
               ? 0
               : this.CantidadMujeresEmbarazadas,
-          EjecucionReportada: this.datos.ejecutado,
+          EjecucionReportada: this.datos.ejecutado == null ? 0 : 0,
           EjecucionMonitoreada:
             this.EjecucionMonitoreada === null ||
             this.EjecucionMonitoreada === ''
@@ -537,12 +655,14 @@ export default {
               : this.EjecucionMonitoreada,
           Latitude: this.position.latitude,
           Longitude: this.position.longitude,
+          archivos: datosfotos,
           empleado:
             this.store.user[
               'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
             ],
         })
         .then(() => {
+          this.isdisable = false;
           this.$swal.fire({
             title: 'Guardado con exito!',
             confirmButtonColor: '#2979ff',
@@ -553,6 +673,7 @@ export default {
           this.$router.push({ path: '/ejecucion_monitoreada' });
         })
         .catch(() => {
+          this.isdisable = false;
           this.error = 'Ocurrió un error';
           // eslint-disable-next-line no-alert
           alert('Datos Incorrectos..');
@@ -571,7 +692,6 @@ export default {
         });
     },
     buscar() {
-      this.rows = [];
       this.$apiLogin
         .get(
           `/api/EjecucionMonitoreada/ListarDatosFichasDTO/${this.$route.params.id}`
@@ -675,4 +795,11 @@ export default {
   max-height: 100vh;
   z-index: 1000;
 }
+q-img {
+  display: block;
+  width: 100px; /* Puedes ajustar el tamaño de la imagen */
+  height: auto;
+  cursor: pointer;
+}
 </style>
+asyncasync

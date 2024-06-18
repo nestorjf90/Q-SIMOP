@@ -10,7 +10,10 @@
           <a>
             <q-toolbar-title shrink class="row items-center justify-center">
               <center>
-                <img src="" style="height: 50px; max-width: 980px" />
+                <img
+                  src="Icono-01.png"
+                  style="height: 40px; max-width: 980px; padding-top: 10px"
+                />
               </center>
             </q-toolbar-title>
           </a>
