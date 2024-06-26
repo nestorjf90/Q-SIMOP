@@ -585,6 +585,7 @@ export default {
     },
     async guardarinfo() {
       this.isdisable = true;
+      this.loading = true;
       const listadounidades = this.datoslista.unidades.map((item) => ({
         id: item.value,
         check: this.unidad_accion.includes(item.value),
@@ -678,6 +679,7 @@ export default {
         })
         .then(() => {
           this.isdisable = false;
+          this.loading = false;
           this.$swal.fire({
             title: 'Guardado con exito!',
             confirmButtonColor: '#2979ff',
