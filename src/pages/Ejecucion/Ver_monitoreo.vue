@@ -7,7 +7,10 @@
     </div>
 
     <q-card>
-      <div class="q-pa-md">
+      <div v-if="loading" class="q-pa-md flex flex-center">
+        <q-spinner-hourglass color="red" size="4em"></q-spinner-hourglass>
+      </div>
+      <div class="q-pa-md" v-else>
         <div class="row q-col-gutter-sm">
           <div class="col-12">
             <p id="titulos">Ficha ejecutiva de proyecto</p>
@@ -462,6 +465,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       position: null,
       coordinates: {},
       datos: [],
@@ -525,12 +529,14 @@ export default {
       this.isFullScreen = !this.isFullScreen;
     },
     listaitems() {
+      this.loading = true;
       this.$apiLogin
         .get(
           `/api/EjecucionMonitoreada/ListaritemsGuardados?id=${this.$route.params.idmonitoreo}`
         )
         .then((respuesta) => {
           this.datoslista = respuesta.data;
+          this.loading = false;
         })
         .catch(() => {
           this.error = 'Ocurrió un error';

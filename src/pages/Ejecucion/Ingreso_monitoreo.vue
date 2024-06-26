@@ -9,7 +9,10 @@
     </div>
 
     <q-card>
-      <div class="q-pa-md">
+      <div v-if="loading" class="q-pa-md flex flex-center">
+        <q-spinner-hourglass color="red" size="4em"></q-spinner-hourglass>
+      </div>
+      <div class="q-pa-md" v-else>
         <div class="row q-col-gutter-sm">
           <div class="col-12">
             <p id="titulos">Ficha ejecutiva de proyecto</p>
@@ -358,14 +361,24 @@
             </div>
           </div>
           <div class="col-12">
-            <div class="col-12 col-md-6">
-              <q-btn label="Tomar Foto" @click="takePhoto" color="primary" />
+            <div class="col-12 col-md-6 q-pa-md flex flex-center">
+              <q-btn
+                label="Tomar Foto"
+                @click="takePhoto"
+                color="primary"
+                class="q-mr-sm"
+              />
               <q-btn
                 label="Seleccionar desde galeria"
                 @click="takePhotoFromGallery"
                 color="primary"
                 align="right"
               />
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="col-12 col-md-6">
               <q-list>
                 <q-item v-for="(image, index) in photos" :key="index">
                   <q-item-section
@@ -390,6 +403,7 @@
               </q-list>
             </div>
           </div>
+
           <div class="col-6">
             <q-btn
               color="red"
@@ -513,6 +527,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       isdisable: false,
       position: null,
       coordinates: {},
@@ -680,10 +695,12 @@ export default {
         });
     },
     listaitems() {
+      this.loading = true;
       this.$apiLogin
         .get('/api/EjecucionMonitoreada/Listaritems')
         .then((respuesta) => {
           this.datoslista = respuesta.data;
+          this.loading = false;
         })
         .catch(() => {
           this.error = 'Ocurrió un error';
